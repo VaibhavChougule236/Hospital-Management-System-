@@ -1,5 +1,9 @@
 Hospital Management System - Java Swing Application
+
+
 Overview
+
+
 The Hospital Management System is a desktop application developed using Java Swing. This application is designed to manage basic hospital operations, including patient and doctor management, appointment booking, and various other hospital-related tasks. It provides a user-friendly interface for hospital staff to perform daily operations efficiently.
 
 Features
