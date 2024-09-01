@@ -22,7 +22,7 @@ public class HospitalManagement extends JFrame {
         operationPanel = new JPanel(new BorderLayout());
         operationPanel.setBorder(BorderFactory.createTitledBorder("View"));
 
-        // Label at the top of the button panel
+        
         JLabel label = new JLabel("Services ");
         label.setFont(new Font("Arial",20,20));
         label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -32,7 +32,7 @@ public class HospitalManagement extends JFrame {
         label.setPreferredSize(new Dimension(780, 50));
         buttonPanel.add(label);
 
-        // Creating buttons
+        
         JButton b1 = new JButton("Add Patient");
         JButton b2 = new JButton("View Patients");
         JButton b3 = new JButton("Check Patient");
@@ -42,7 +42,7 @@ public class HospitalManagement extends JFrame {
         JButton b6 = new JButton("Book Appointment");
         JButton b7 = new JButton("Exit");
 
-        // Adding buttons to the button panel with margin
+        
         buttonPanel.add(b1);
         buttonPanel.add(b2);
         buttonPanel.add(b3);
@@ -52,22 +52,22 @@ public class HospitalManagement extends JFrame {
         buttonPanel.add(b6);
         buttonPanel.add(b7);
 
-        // Setting the layout of the main frame to a grid layout with 2 columns
+       
         setLayout(new GridLayout(1, 2));
-        add(buttonPanel); // Adding the button panel on the left side
-        add(operationPanel); // Adding the operation panel on the right side
+        add(buttonPanel); 
+        add(operationPanel); 
 
-        // Adding a border to the operation panel to make it visually appealing
+        
         operationPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Operations"),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10))); // Add padding inside the border
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-        // Example of adding a component to the operation panel
+        
         JLabel operationLabel = new JLabel("Select a service to perform operations.");
         operationLabel.setHorizontalAlignment(SwingConstants.CENTER);
         operationPanel.add(operationLabel, BorderLayout.CENTER);
 
-        // Frame settings
+       
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -159,27 +159,19 @@ public void deletePatient(int Patient_Id,String Patient_Name){
         ResultSet rs = null;
 
         try {
-            // Load the JDBC driver
+           
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Establish the connection
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root", "Vbcd@123");
-
-            // Create a statement with scrollable ResultSet
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-            // Execute the query
-            rs = statement.executeQuery("SELECT * FROM Patient");
 
-            // Move the cursor to the last row to get the row count
+            rs = statement.executeQuery("SELECT * FROM Patient");
             rs.last();
             int rowCount = rs.getRow();
             rs.beforeFirst();
 
-            // Initialize the data array
             data = new String[rowCount][5];
 
-            // Populate the data array
             int row = 0;
             while (rs.next()) {
                 data[row][0] = rs.getString("Id");
@@ -211,7 +203,7 @@ public void deletePatient(int Patient_Id,String Patient_Name){
             rs.last();
             int rows = rs.getRow();
             rs.beforeFirst();
-            Data = new String[rows][3]; // We know there are 3 columns: Id, Name, Specialization
+            Data = new String[rows][3]; 
             int row = 0;
             while (rs.next()) {
                 Data[row][0] = rs.getString("Id");
@@ -233,7 +225,7 @@ public void deletePatient(int Patient_Id,String Patient_Name){
         tableModel = new DefaultTableModel(getDataOfPatientsFromDatabase(), ColumnNames);
         table = new JTable(tableModel);
         jp.setSize(500, 300);
-        jp.add(new JScrollPane(table)); // Adding scrollPane
+        jp.add(new JScrollPane(table)); 
        jp.setLocationRelativeTo(null);
         jp.setVisible(true);
     }
@@ -313,16 +305,14 @@ public void deletePatient(int Patient_Id,String Patient_Name){
 
     public void bookAppointment() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root", "Vbcd@123")) {
-            // Input for Patient ID, Doctor ID, and Appointment Date
             int patientId = Integer.parseInt(JOptionPane.showInputDialog(frame, "Enter Patient ID:"));
             int doctorId = Integer.parseInt(JOptionPane.showInputDialog(frame, "Enter Doctor ID:"));
             String appointmentDate = JOptionPane.showInputDialog(frame, "Enter Appointment Date (YYYY-MM-DD):");
             LocalDate date = LocalDate.parse(appointmentDate);
 
-            // Check if Patient and Doctor are valid and available
             if (checkPatient(conn, patientId) && checkDoctor(conn, doctorId)) {
                 if (doctorIsAvailable(conn, doctorId, appointmentDate)) {
-                    // Insert Appointment if all conditions are met
+                   
                     String query = "INSERT INTO Appointments(Patient_Id, Doctor_Id, Appointment_Date) VALUES(?, ?, ?)";
                     PreparedStatement statement = conn.prepareStatement(query);
                     statement.setInt(1, patientId);
